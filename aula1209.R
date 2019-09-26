@@ -5,13 +5,14 @@ goal <- c(1,0,1,0,1)
 
 myDf <- cbind(a,b,c,goal)
 myDf
+class(myDf)
 library(arules)
 var <- apriori(myDf, parameter = NULL, appearance = NULL, control = NULL)
 inspect(var)
-
 subConjunto <- subset(var, (lhs %in% "goal"))
 subConjunto
 inspect(subConjunto)
+
 
 
 var <- read.csv(file="C:/Users/Felipe/Downloads/_ASSOC00.csv", header=TRUE, sep=",")
@@ -21,6 +22,10 @@ ncol(var)
 for (i in 1:ncol(var)) {
   var[,i] = as.factor(var[,i])
 }
+class(var)
 
 varApriori <- apriori(var, parameter = list(sup = 0.1, conf = 0.9))
 inspect(varApriori)
+subConjunto <- subset(varApriori, (rhs %in% "Carne=1"))
+subConjunto
+inspect(subConjunto)

@@ -1,0 +1,26 @@
+biscoito <- c(1, 0, 0, 0, 0, 0)
+cerveja <- c(1, 1, 0, 1, 0, 0)
+cha <- c(1, 0, 0,0,0,0)
+salaminho <- c(1,0,0,1,0,0)
+couve <- c(0,1,1,1,1,1)
+linguica <- c(0,1,0,0,0,1)
+pao <- c(0,1,1,1,1,0)
+queijo <- c(0,1,0,0,0,0)
+cafe <- c(0,0,1,1,1,0)
+brocolis <- c(0,0,1,1,1,0)
+
+myDf <- cbind(biscoito,cerveja,cha,salaminho, couve, linguica, pao, queijo, cafe, brocolis)
+myDf
+myDf <- as.data.frame(myDf)
+myDf <- as.matrix(myDf)
+
+for (i in 1:ncol(myDf)) {
+  myDf[,i] = as.factor(myDf[,i])
+}
+class(myDf)
+library(arules)
+var <- apriori(myDf, parameter = list(sup = 0.3, conf = 0.6, target="rules"))
+inspect(var)
+subConjunto <- subset(var, (rhs %in% "salaminho"), (lhs %in% "cerveja"))
+subConjunto
+inspect(subConjunto)
