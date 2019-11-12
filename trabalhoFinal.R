@@ -54,7 +54,6 @@ dados[is.na(dados)] = 0
 library(arules)
 dados <- as.matrix(dados)
 
-varApriori <- apriori(dados, parameter = list(sup = 0.05, conf = 0.7))
+varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
-#MAIS ACEITO É O 25 COM SUPORTE 0.11770476 E CONFIANÇA 0.7317073
