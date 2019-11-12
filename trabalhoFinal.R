@@ -7,7 +7,6 @@ subt <- subset(subt, select = -X)
 data<- data[(!is.na(data$paper)),]
 subt<- subt[(!is.na(subt$paper)),]
 
-
 #verifica se os papers do primeiro csv estao alinhados com os papers do segundo csv
 indiceIncorreto <- TRUE
 for(i in 1:nrow(subt)){
@@ -16,7 +15,6 @@ for(i in 1:nrow(subt)){
   }
 }
 
-
 subtopics <- subt$subtopics
 dataFrame <- data.frame(data, subtopics)
 
@@ -24,9 +22,6 @@ dataFrame <- dataFrame[(dataFrame$year >= 2000),]
 
 #verifica se há algum status com valor incorreto
 teste1 <- dataFrame[!(dataFrame$status == "accepted" | dataFrame$status == "rejected"),]
-
-
-
 
 subt <- read.csv(file="topics.csv", header=TRUE, sep=";")
 
@@ -42,8 +37,6 @@ dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSu
 #install.packages("BBmisc")
 library(BBmisc)
 
-
-
 for (i in 1:nrow(dataFrame)) {
   ids <- dataFrame[i, "subtopics"]
   ids <- as.character(ids)
@@ -58,12 +51,10 @@ for (i in 1:nrow(dataFrame)) {
 
 dados[is.na(dados)] = 0
 
-for (i in 1:ncol(dados)) {
-  dados[,i] = as.factor(dados[,i])
-}
-
 library(arules)
+dados <- as.matrix(dados)
 
-varApriori <- apriori(dados, parameter = list(sup = 0.5, conf = 0.9, minlen=6, maxlen=6, maxtime=120))
-subConjunto <- subset(varApriori, (rhs %in% "aceito=1"))
-inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
+varApriori <- apriori(dados, parameter = list(sup = 0.05, conf = 0.7))
+subConjunto <- subset(varApriori, (rhs %in% "aceito"))
+inspect(sort(subConjunto, decreasing = TRUE, by="confidence")) 
+#MAIS ACEITO É O 25 COM SUPORTE 0.11770476 E CONFIANÇA 0.7317073
