@@ -54,6 +54,18 @@ dados[is.na(dados)] = 0
 library(arules)
 dados <- as.matrix(dados)
 
+#subtópicos com maiores chances de ser aceitos
 varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
+
+
+
+#Há um padrão aqui, todos os artigos com o subtopico 67, também tem o subtópico 9
+select <- dados[dados[, "67"] == 1,]
+
+varApriori <- apriori(dados, parameter = list(sup = 0.01, conf = 0.3))
+inspect(varApriori)
+subConjunto <- subset(varApriori, !(rhs %in% "aceito"))
+inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
+
