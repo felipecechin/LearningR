@@ -14,13 +14,8 @@ myDf
 myDf <- as.data.frame(myDf)
 myDf <- as.matrix(myDf)
 
-for (i in 1:ncol(myDf)) {
-  myDf[,i] = as.factor(myDf[,i])
-}
 class(myDf)
 library(arules)
 var <- apriori(myDf, parameter = list(sup = 0.3, conf = 0.6, target="rules"))
-inspect(var)
 subConjunto <- subset(var, (rhs %in% "salaminho"), (lhs %in% "cerveja"))
-subConjunto
-inspect(subConjunto)
+inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
