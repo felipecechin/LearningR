@@ -29,13 +29,13 @@ idSubtopics <- subt$subtopic
 length(idSubtopics)
 
 idSubtopics <- append(idSubtopics, "aceito", after = length(idSubtopics))
-idSubtopics
-class(idSubtopics)
-length(idSubtopics)
+
+
+library(BBmisc)
+
 dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSubtopics)
 
 #install.packages("BBmisc")
-library(BBmisc)
 
 for (i in 1:nrow(dataFrame)) {
   ids <- dataFrame[i, "subtopics"]
@@ -61,11 +61,15 @@ inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
 
 
 
-#Há um padrão aqui, todos os artigos com o subtopico 67, também tem o subtópico 9
-select <- dados[dados[, "67"] == 1,]
+#dataframe com cada ano
+  # cada ano -> um com subtopicos e um com topicos -> um com aceitado e outro com rejeitado
 
-varApriori <- apriori(dados, parameter = list(sup = 0.01, conf = 0.3))
-inspect(varApriori)
-subConjunto <- subset(varApriori, !(rhs %in% "aceito"))
-inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
+
+#dataframe com cada topico do paper com aceitado ou rejeitado
+
+
+
+
+
+
 
