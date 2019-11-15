@@ -20,7 +20,7 @@ library(BBmisc)
 
 idTopics <- append(idTopics, "aceito", after = length(idTopics))
 
-dados <- setNames(data.frame(matrix(ncol = length(idTopics), nrow = 1)), idTopics)
+dados <- setNames(data.frame(matrix(ncol = length(idTopics), nrow = 0)), idTopics)
 
 #install.packages("BBmisc")
 
@@ -29,10 +29,11 @@ for (i in 1:nrow(dataFrame)) {
   ids <- as.character(ids)
   ids <- explode(ids, "-")
   for (j in 1:length(ids)) {
-    topicoSelecionado <- topics[(topics$subtopic = ids[j]),]
-    if (nrow(topicoSelecionado) == 1) {
-      dados[i, as.character(topicoSelecionado$topic)] <- 1
-    }
+    topicoSelecionado <- topics[(topics$subtopic == ids[j]),]
+    dados[i, as.character(topicoSelecionado$topic)] <- 1
+  }
+  if (dataFrame[i, "status"] == "accepted") {
+    dados[i, "aceito"] = 1
   }
 }
 
@@ -40,8 +41,8 @@ dados[is.na(dados)] = 0
 
 library(arules)
 dados <- as.matrix(dados)
-dados
 
-varApriori <- apriori(dados, parameter = list(sup = 0.01, conf = 0.4))
-subConjunto <- subset(varApriori, (rhs %in% "rejeitado"))
+
+varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.4))
+subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))

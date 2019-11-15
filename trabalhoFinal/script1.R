@@ -54,7 +54,7 @@ dados[is.na(dados)] = 0
 library(arules)
 dados <- as.matrix(dados)
 
-#subtópicos com maiores chances de ser aceitos
+#subtopicos com maiores chances de ser aceitos
 varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))

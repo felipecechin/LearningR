@@ -44,7 +44,7 @@ library(arules)
 dados <- as.matrix(dados)
 
 
-#Há um padrão aqui, todos os artigos com o subtopico 67, também tem o subtópico 9
+#Ha um padrao aqui, todos os artigos com o subtopico 67, tambem tem o subtopico 9
 select <- dados[dados[, "67"] == 1,]
 
 varApriori <- apriori(dados, parameter = list(sup = 0.01, conf = 1))
