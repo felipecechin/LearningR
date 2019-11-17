@@ -18,7 +18,7 @@ idTopics <- unique(topics$topic)
 
 library(BBmisc)
 
-idTopics <- append(idTopics, "aceito", after = length(idTopics))
+idTopics <- append(idTopics, "rejeitado", after = length(idTopics))
 
 dados <- setNames(data.frame(matrix(ncol = length(idTopics), nrow = 0)), idTopics)
 
@@ -32,8 +32,8 @@ for (i in 1:nrow(dataFrame)) {
     topicoSelecionado <- topics[(topics$subtopic == ids[j]),]
     dados[i, as.character(topicoSelecionado$topic)] <- 1
   }
-  if (dataFrame[i, "status"] == "accepted") {
-    dados[i, "aceito"] = 1
+  if (dataFrame[i, "status"] == "rejected") {
+    dados[i, "rejeitado"] = 1
   }
 }
 
@@ -43,6 +43,6 @@ library(arules)
 dados <- as.matrix(dados)
 
 
-varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
-subConjunto <- subset(varApriori, (rhs %in% "aceito"))
+varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.3))
+subConjunto <- subset(varApriori, (rhs %in% "rejeitado"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))

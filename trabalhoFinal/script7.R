@@ -11,16 +11,21 @@ subtopics <- subt$subtopics
 dataFrame <- data.frame(data, subtopics)
 
 dataFrame <- dataFrame[(dataFrame$year >= 2000),]
+anos <- unique(dataFrame$year)
 
-topics <- read.csv(file="topics.csv", header=TRUE, sep=";")
+subt <- read.csv(file="topics.csv", header=TRUE, sep=";")
 
-idTopics <- unique(topics$topic)
+idSubtopics <- subt$subtopic
 
 library(BBmisc)
 
-idTopics <- append(idTopics, "aceito", after = length(idTopics))
 
-dados <- setNames(data.frame(matrix(ncol = length(idTopics), nrow = 0)), idTopics)
+idSubtopics <- append(idSubtopics, anos)
+idSubtopics <- append(idSubtopics, "aceito", after = length(idSubtopics))
+idSubtopics
+
+
+dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSubtopics)
 
 #install.packages("BBmisc")
 
@@ -29,20 +34,21 @@ for (i in 1:nrow(dataFrame)) {
   ids <- as.character(ids)
   ids <- explode(ids, "-")
   for (j in 1:length(ids)) {
-    topicoSelecionado <- topics[(topics$subtopic == ids[j]),]
-    dados[i, as.character(topicoSelecionado$topic)] <- 1
+    dados[i, ids[j]] = 1
   }
   if (dataFrame[i, "status"] == "accepted") {
     dados[i, "aceito"] = 1
   }
+  ano <- as.character(dataFrame[i, "year"])
+  dados[i, ano] = 1
 }
 
 dados[is.na(dados)] = 0
 
 library(arules)
 dados <- as.matrix(dados)
+dados
 
-
-varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
+varApriori <- apriori(dados, parameter = list(sup = 0.05, conf = 0.7))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
