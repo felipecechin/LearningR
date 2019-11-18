@@ -19,7 +19,6 @@ length(idSubtopics)
 
 idSubtopics <- append(idSubtopics, "aceito", after = length(idSubtopics))
 
-
 library(BBmisc)
 
 dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSubtopics)

@@ -30,7 +30,6 @@ length(idSubtopics)
 
 idSubtopics <- append(idSubtopics, "aceito", after = length(idSubtopics))
 
-
 library(BBmisc)
 
 dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSubtopics)
@@ -58,18 +57,3 @@ dados <- as.matrix(dados)
 varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
-
-
-
-#dataframe com cada ano
-  # cada ano -> um com subtopicos e um com topicos -> um com aceitado e outro com rejeitado
-
-
-#dataframe com cada topico do paper com aceitado ou rejeitado
-
-
-
-
-
-
-

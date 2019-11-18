@@ -12,15 +12,23 @@ dataFrame <- data.frame(data, subtopics)
 
 dataFrame <- dataFrame[(dataFrame$year >= 2000),]
 
-topics <- read.csv(file="topics.csv", header=TRUE, sep=";")
+confs <- unique(dataFrame$conf)
+conferencias <- c()
 
-idTopics <- unique(topics$topic)
+for (i in 1:length(confs)) {
+  conferencias <- c(conferencias, paste("conf", confs[i], sep=''))
+}
+
+subt <- read.csv(file="topics.csv", header=TRUE, sep=";")
+
+idSubtopics <- subt$subtopic
 
 library(BBmisc)
 
-idTopics <- append(idTopics, "rejeitado", after = length(idTopics))
+idSubtopics <- append(idSubtopics, conferencias)
+idSubtopics <- append(idSubtopics, "aceito", after = length(idSubtopics))
 
-dados <- setNames(data.frame(matrix(ncol = length(idTopics), nrow = 0)), idTopics)
+dados <- setNames(data.frame(matrix(ncol = length(idSubtopics), nrow = 0)), idSubtopics)
 
 #install.packages("BBmisc")
 
@@ -29,12 +37,14 @@ for (i in 1:nrow(dataFrame)) {
   ids <- as.character(ids)
   ids <- explode(ids, "-")
   for (j in 1:length(ids)) {
-    topicoSelecionado <- topics[(topics$subtopic == ids[j]),]
-    dados[i, as.character(topicoSelecionado$topic)] <- 1
+    dados[i, ids[j]] = 1
   }
-  if (dataFrame[i, "status"] == "rejected") {
-    dados[i, "rejeitado"] = 1
+  if (dataFrame[i, "status"] == "accepted") {
+    dados[i, "aceito"] = 1
   }
+  conf <- as.character(dataFrame[i, "conf"])
+  conferencia <- paste("conf", conf, sep='')
+  dados[i, conferencia] = 1
 }
 
 dados[is.na(dados)] = 0
@@ -42,7 +52,5 @@ dados[is.na(dados)] = 0
 library(arules)
 dados <- as.matrix(dados)
 
-
-varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.3))
-subConjunto <- subset(varApriori, (rhs %in% "rejeitado"))
-inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))
+varApriori <- apriori(dados, parameter = list(sup = 0.05, conf = 0.7))
+inspect(sort(varApriori, decreasing = TRUE, by="confidence"))
