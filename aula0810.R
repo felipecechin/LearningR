@@ -2,7 +2,6 @@ data("faithful")
 head(faithful)
 
 
-install.packages("caret")
 library(caret)
 data <- faithful
 inTrain <- createDataPartition(y=faithful$waiting, p=0.5, list=FALSE)
@@ -22,7 +21,7 @@ new <- data.frame(waiting = seq(-3, 3, 0.5))
 predict(meuModeloLinear, new)
 
 
-var <- read.csv(file="C:/Users/Felipe/Downloads/GeyserUFSM.csv", header=TRUE, sep=",")
+var <- read.csv(file="GeyserUFSM.csv", header=TRUE, sep=",")
 
 var <- subset(var, select = -X)
 inTrain <- createDataPartition(y=var$espera, p=0.5, list=FALSE)

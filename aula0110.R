@@ -19,7 +19,7 @@ print(xtable(head(csv)), type = "html", digits = 2, include.rownames=FALSE)
 
 
 
-entropy <- (-(22/35)*log2(22/35))-((13/35)*log2(13/35))
+entropy <- (-(21/35)*log2(21/35))-((14/35)*log2(14/35))
 entropyFilho <- (-(19/21)*log2(19/21))-((2/21)*log2(2/21))
 entropyFilho2 <- (-(3/14)*log2(3/14))-((11/14)*log2(11/14))
 ganho <- entropy - (((21/35) * entropyFilho) + ((14/35) * entropyFilho2))

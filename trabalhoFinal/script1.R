@@ -54,6 +54,6 @@ library(arules)
 dados <- as.matrix(dados)
 
 #subtopicos com maiores chances de ser aceitos
-varApriori <- apriori(dados, parameter = list(sup = 0.1, conf = 0.7))
+varApriori <- apriori(dados, parameter = list(sup = 0.05, conf = 0.5))
 subConjunto <- subset(varApriori, (rhs %in% "aceito"))
 inspect(sort(subConjunto, decreasing = TRUE, by="confidence"))

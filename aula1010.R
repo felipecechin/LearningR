@@ -34,7 +34,6 @@ new <- data.frame(espera = c(200, 230, 245, 270))
 predict(meuModeloLinear, new)
 
 
-install.packages("psych")
 library(psych)
 galton
 galton.br <- data.frame(galton)
@@ -45,9 +44,6 @@ hist(galton.br$filho, breaks=70)
 
 
 
-library(plotly)
-install.packages("plotly")
-install.packages("manipulate")
 library(plotly)
 library(manipulate)
 
